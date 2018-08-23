@@ -1,10 +1,8 @@
-8. Require the following npm packages inside of the server.js file:
-    *
-    express *
-    body - parser
-npm
+// Require the following npm packages inside of the server.js file:
+//     *
+//     express *
+//     body - parser
 
-// Include the geocoder and inquirer NPM packages
 var express = require("express");
 var bodyparser = require("bodyparser");
 
