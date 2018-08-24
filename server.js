@@ -1,29 +1,32 @@
-// Require the following npm packages inside of the server.js file:
-//     *
-//     express *
-//     body - parser
-
 var express = require("express");
-var bodyparser = require("bodyparser");
+var bodyParser = require("body-parser");
 
-// Prompt the user to provide location information.
-inquirer.prompt([
+var PORT = process.env.PORT || 8080;
 
-    {
-        type: "input",
-        name: "userInput",
-        message: "Which location or landmark would you like to geocode?"
-    }
+var app = express();
 
-    // After the prompt, store the user's response in a variable called location.
-]).then(function(location) {
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static("public"));
 
-    // console.log(location.userInput);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-    // Then use the Google Geocoder to Geocode the address
-    geocoder.geocode(location.userInput, function(err, data) {
+// parse application/json
+app.use(bodyParser.json());
 
-        console.log(JSON.stringify(data, null, 2));
-    });
+// Set Handlebars.
+var exphbs = require("express-handlebars");
 
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+// Import routes and give the server access to them.
+var routes = require("./controllers/burgerController.js");
+
+app.use(routes);
+
+// Start our server so that it can begin listening to client requests.
+app.listen(PORT, function() {
+    // Log (server-side) when our server has started
+    console.log("Server listening on: http://localhost:" + PORT);
 });
