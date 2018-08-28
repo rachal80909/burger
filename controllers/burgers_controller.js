@@ -2,16 +2,20 @@ var express = require("express");
 
 var router = express.Router();
 
+var burger = require('../models/burgers');
 
+// Cotroller => model => orm => connection.js => SQL database
 
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function(req, res) {
-    res.json("hello");
+    burger.all(function(result) {
+        res.render("index", { burgers: result });
+    });
 });
 
-router.post("/api/cats", function(req, res) {
-    cat.create([
-        "name", "sleepy"
+router.post("/api/burgers", function(req, res) {
+    burgers.create([
+        "name", "veggie"
     ], [
         req.body.name, req.body.sleepy
     ], function(result) {
@@ -20,13 +24,13 @@ router.post("/api/cats", function(req, res) {
     });
 });
 
-router.put("/api/cats/:id", function(req, res) {
+router.put("/api/burgers/:id", function(req, res) {
     var condition = "id = " + req.params.id;
 
     console.log("condition", condition);
 
-    cat.update({
-        sleepy: req.body.sleepy
+    burgers.update({
+        veggie: req.body.veggie
     }, condition, function(result) {
         if (result.changedRows == 0) {
             // If no rows were changed, then the ID must not exist, so 404
@@ -37,7 +41,7 @@ router.put("/api/cats/:id", function(req, res) {
     });
 });
 
-router.delete("/api/cats/:id", function(req, res) {
+router.delete("/api/burgers/:id", function(req, res) {
     var condition = "id = " + req.params.id;
 
     cat.delete(condition, function(result) {
